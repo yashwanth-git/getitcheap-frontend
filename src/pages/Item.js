@@ -16,7 +16,11 @@ const Item = () => {
     dispatch(getItem(itemId));
   }, [dispatch, itemId]);
   console.log(data);
-  return <div>{data ? <h2>{data.itemName}</h2> : <Loader />}</div>;
+  return (
+    <div className="container">
+      {data ? <h2>{data.itemName}</h2> : <Loader />}
+    </div>
+  );
 };
 
 export default Item;

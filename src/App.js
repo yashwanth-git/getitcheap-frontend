@@ -5,9 +5,11 @@ import GlobalStyle from "./styles/GlobalStyle";
 import { Switch, Route } from "react-router-dom";
 //Pages
 import Home from "./pages/Home";
+import Auth from "./pages/Auth";
 import Sell from "./pages/Sell";
 import Rent from "./pages/Rent";
 import Item from "./pages/Item";
+
 function App() {
   const [theme, setTheme] = useState(false);
   return (
@@ -17,6 +19,9 @@ function App() {
       <Switch>
         <Route path="/" exact>
           <Home />
+        </Route>
+        <Route path="/auth" exact>
+          <Auth />
         </Route>
         <Route path="/rent">
           <Rent />

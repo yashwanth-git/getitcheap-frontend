@@ -1,10 +1,28 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
 const Navbar = ({ theme, setTheme }) => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation();
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+  console.log(user);
+  useEffect(() => {
+    const token = user?.token;
+    setUser(JSON.parse(localStorage.getItem("profile")));
+  }, [location]);
+
   const modeChangeHandler = () => {
     setTheme(!theme);
   };
+
+  const logout = () => {
+    dispatch({ type: "LOGOUT" });
+    history.push("/");
+    setUser(null);
+  };
+
   return (
     <div className="container">
       <StyledNav>
@@ -21,12 +39,70 @@ const Navbar = ({ theme, setTheme }) => {
           </Logo>
         </Link>
         <AddWrapper>
-          <Link to="/sell">
-            <SButton>For Sale</SButton>
-          </Link>
-          <Link to="/rent">
-            <SButton>For Rent</SButton>
-          </Link>
+          {user ? (
+            <>
+              <Profile>
+                <div className="profileWrap">
+                  {user.result.imageUrl !== "" ? (
+                    <img
+                      className="profile-pic"
+                      src={user.result.imageUrl}
+                      alt={user.result.name}
+                    />
+                  ) : (
+                    user.result.name.charAt(0)
+                  )}
+                  <p>{user.result.name}</p>
+                  <div className="down-arrow">
+                    <svg
+                      version="1.1"
+                      id="Capa_1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      x="0px"
+                      y="0px"
+                      viewBox="0 0 451.847 451.847"
+                    >
+                      <g>
+                        <path
+                          d="M225.923,354.706c-8.098,0-16.195-3.092-22.369-9.263L9.27,151.157c-12.359-12.359-12.359-32.397,0-44.751
+		c12.354-12.354,32.388-12.354,44.748,0l171.905,171.915l171.906-171.909c12.359-12.354,32.391-12.354,44.744,0
+		c12.365,12.354,12.365,32.392,0,44.751L248.292,345.449C242.115,351.621,234.018,354.706,225.923,354.706z"
+                        />
+                      </g>
+                      <g></g>
+                      <g></g>
+                      <g></g>
+                      <g></g>
+                      <g></g>
+                      <g></g>
+                      <g></g>
+                      <g></g>
+                      <g></g>
+                      <g></g>
+                      <g></g>
+                      <g></g>
+                      <g></g>
+                      <g></g>
+                      <g></g>
+                    </svg>
+                  </div>
+                </div>
+                <div className="dropdown">
+                  <Link to="/sell">
+                    <SLink>For Sale</SLink>
+                  </Link>
+                  <Link to="/rent">
+                    <SLink>For Rent</SLink>
+                  </Link>
+                  <SLink onClick={logout}>Logout</SLink>
+                </div>
+              </Profile>
+            </>
+          ) : (
+            <Link to="/auth">
+              <PButton>Sign In</PButton>
+            </Link>
+          )}
           <Mode>
             <label>
               <input type="checkbox" onChange={modeChangeHandler}></input>
@@ -62,31 +138,72 @@ const AddWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  .profile-pic {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    margin-right: 1em;
+  }
+  .down-arrow {
+    width: 1rem;
+    margin: 0 1.5em 0 0.5em;
+  }
+  p {
+  }
 `;
-// const PButton = styled.button`
-//   font-size: var(--lengthMd1);
-//   font-weight: 500;
-//   padding: 0.5em 1.5em;
-//   background: var(--colorPrimary);
-//   margin-right: 1em;
-//   color: #fff;
-//   border: 0;
-//   cursor: pointer;
-//   border-radius: 4px;
-//   transition: background 300ms ease-in-out;
-//   &:hover {
-//     background: #690df3;
-//   }
-// `;
-const SButton = styled.button`
+
+const Profile = styled.div`
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  &:hover .dropdown {
+    opacity: 1;
+  }
+  .profileWrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .dropdown {
+    opacity: 0;
+    position: absolute;
+    top: 55px;
+    height: auto;
+    width: 100%;
+    background: #fff;
+    padding: 1em;
+    border-radius: 5px;
+    transition: opacity 250ms ease-in-out;
+  }
+`;
+
+const PButton = styled.button`
+  font-size: var(--lengthMd1);
+  font-weight: 500;
+  padding: 0.5em 1.5em;
+  background: var(--colorPrimary);
+  margin-right: 1em;
+  color: #fff;
+  border: 0;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 300ms ease-in-out;
+  &:hover {
+    background: #690df3;
+  }
+`;
+const SLink = styled.a`
+  display: block;
+  width: 100%;
   font-size: var(--lengthMd1);
   padding: 0.5em 1.5em;
   margin-right: 1em;
   color: var(--colorPrimary);
-  border: 1px solid var(--colorPrimary);
   cursor: pointer;
   border-radius: 4px;
-  transition: background, color 300ms ease-in-out;
+  transition: all 150ms ease-in-out;
+  margin-bottom: 1em;
   &:hover {
     background: var(--colorPrimary);
     color: #fff;

@@ -26,11 +26,13 @@ const GlobalStyle = createGlobalStyle`
     --colorDarkAccent: #C651CD;
     --colorDarkBg: #363636;
 }
-.darkMode{
+.darkMode {
   background: var(--colorDarkBg);
   color:var(--colorDarkText);
-  box-shadow: 0;
 }
+.darkMode *{
+  box-shadow:none;
+} 
 *,
 ::after,
 ::before {
