@@ -8,9 +8,8 @@ const Items = ({ items }) => {
   console.log(items);
   return (
     <StyledItems>
-      <h2>Items</h2>
       <div className="row">
-        {items.length !== 0 ? (
+        {items.length !== 0 && items !== null ? (
           items.map((item) => (
             <div className="col-lg-4 col-md-4 col-sm-12" key={item._id}>
               <Card>
@@ -51,10 +50,6 @@ const Items = ({ items }) => {
 
 const StyledItems = styled.div`
   margin: 0 3em;
-  h2 {
-    font-size: var(--lengthLg1);
-    margin-bottom: 0.5em;
-  }
   a {
     text-decoration: none;
     color: inherit;

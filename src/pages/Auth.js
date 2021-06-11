@@ -5,6 +5,7 @@ import lock from "../images/lock.svg";
 import { GoogleLogin } from "react-google-login";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { signin, signup } from "../redux/actions/auth";
 const initState = {
   firstName: "",
   lastName: "",
@@ -25,8 +26,7 @@ const Auth = () => {
     } else {
       e.target.classList.remove("not-empty");
     }
-    console.log(e);
-    //  setFormData(...formData,e.target.data-label:e.target.value)
+    setFormData({ ...formData, [e.target.dataset.label]: e.target.value });
   };
   const handleShowPassword = () => {
     setShowPassword((prev) => !prev);
@@ -36,13 +36,26 @@ const Auth = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (isSignup) {
+      dispatch(signup(formData, history));
+    } else {
+      dispatch(signin(formData, history));
+    }
     console.log(formData);
   };
   const googleSuccess = async (res) => {
     console.log(res);
-    const result = res?.profileObj;
+    const result1 = res?.profileObj;
+    const result = {
+      email: result1.email,
+      familyName: result1.familyName,
+      giveName: result1.givenName,
+      imageUrl: result1.imageUrl,
+      name: result1.name,
+      userId: result1.googleId,
+    };
     const token = res?.tokenId;
-
+    console.log(result);
     try {
       dispatch({
         type: "AUTH",
@@ -123,7 +136,7 @@ const Auth = () => {
         </div>
         <div className="row">
           <div className="col-lg-12 col-md-12 col-sm-12">
-            <PButton type="submit" onSubmit={handleSubmit}>
+            <PButton type="submit" onClick={handleSubmit}>
               {isSignup ? "Sign Up" : "Sign In"}
             </PButton>
             <GoogleLogin

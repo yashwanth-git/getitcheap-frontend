@@ -9,6 +9,7 @@ import Auth from "./pages/Auth";
 import Sell from "./pages/Sell";
 import Rent from "./pages/Rent";
 import Item from "./pages/Item";
+import YourItems from "./pages/YourItems";
 
 function App() {
   const [theme, setTheme] = useState(false);
@@ -22,6 +23,9 @@ function App() {
         </Route>
         <Route path="/auth" exact>
           <Auth />
+        </Route>
+        <Route path="/your-items" exact>
+          <YourItems />
         </Route>
         <Route path="/rent">
           <Rent />

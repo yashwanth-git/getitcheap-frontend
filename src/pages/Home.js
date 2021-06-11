@@ -13,13 +13,16 @@ const Home = () => {
   useEffect(() => {
     dispatch(getItems());
   }, [dispatch]);
-  // console.log(allItems);
+  console.log(allItems);
   return (
     <>
       <Search />
       <MainContent>
         <Sidebar />
-        <Items items={allItems} />
+        <Container>
+          <h2>Items</h2>
+          <Items items={allItems} />
+        </Container>
       </MainContent>
     </>
   );
@@ -30,5 +33,11 @@ const MainContent = styled.div`
   grid-template-columns: 320px 1fr;
   padding: 4em 0;
 `;
-
+const Container = styled.div`
+  h2 {
+    font-size: var(--lengthLg1);
+    margin-bottom: 0.5em;
+    padding-left: 1.5em;
+  }
+`;
 export default Home;

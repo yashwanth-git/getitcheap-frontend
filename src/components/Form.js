@@ -16,7 +16,6 @@ const Form = ({ option }) => {
     option: option,
     desc: "",
     files: [],
-    creator: "",
     phone: "",
     address: "",
     city: "",
@@ -24,12 +23,28 @@ const Form = ({ option }) => {
     country: "",
   });
   const images = [];
+  const user = JSON.parse(localStorage.getItem("profile"));
   const setFiles = (files) => {
     files.forEach((file) => {
       console.log(file);
       let { base64 } = file;
       images.push(base64);
       setItemData({ ...itemData, files: images });
+    });
+  };
+  const clear = () => {
+    setItemData({
+      itemName: "",
+      cost: "",
+      model: "",
+      option: option,
+      desc: "",
+      files: [],
+      phone: "",
+      address: "",
+      city: "",
+      state: "",
+      country: "",
     });
   };
   const submitHandler = (e) => {
@@ -42,7 +57,6 @@ const Form = ({ option }) => {
       option,
       desc,
       files,
-      creator,
       phone,
       address,
       city,
@@ -57,17 +71,28 @@ const Form = ({ option }) => {
       option !== "" &&
       desc !== "" &&
       files !== "" &&
-      creator !== "" &&
       phone !== "" &&
       address !== "" &&
       city !== "" &&
       state !== "" &&
       country !== ""
     ) {
+      console.log(user.result.name);
+      setItemData({ ...itemData, userName: user.result.name });
       dispatch(addItem(itemData));
+      console.log(itemData);
     }
+    clear();
     history.push("/");
   };
+
+  if (!user?.result?.name) {
+    return (
+      <div className="container">
+        <h2>Please Signin to create an item.</h2>
+      </div>
+    );
+  }
   return (
     <StyledForm>
       <h2>Item Details</h2>
@@ -148,20 +173,6 @@ const Form = ({ option }) => {
       <div className="row">
         <div className="col-lg-6 col-md-6 col-sm-12">
           <InputWrapper>
-            <label htmlFor="creator">Creator</label>
-            <input
-              type="text"
-              className="creator"
-              name="creator"
-              value={itemData.creator}
-              onChange={(e) =>
-                setItemData({ ...itemData, creator: e.target.value })
-              }
-            />
-          </InputWrapper>
-        </div>
-        <div className="col-lg-6 col-md-6 col-sm-12">
-          <InputWrapper>
             <label htmlFor="phone">Phone Number</label>
             <input
               type="phone"
@@ -174,6 +185,7 @@ const Form = ({ option }) => {
             />
           </InputWrapper>
         </div>
+        <div className="col-lg-6 col-md-6 col-sm-12"></div>
         <div className="col-lg-12 col-md-12 col-sm-12">
           <InputWrapper>
             <label htmlFor="address">Address</label>

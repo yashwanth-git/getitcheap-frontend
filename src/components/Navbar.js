@@ -43,16 +43,19 @@ const Navbar = ({ theme, setTheme }) => {
             <>
               <Profile>
                 <div className="profileWrap">
-                  {user.result.imageUrl !== "" ? (
+                  {user.result.imageUrl ? (
                     <img
                       className="profile-pic"
                       src={user.result.imageUrl}
                       alt={user.result.name}
                     />
                   ) : (
-                    user.result.name.charAt(0)
+                    <p className="alter-profile-pic">
+                      {user.result.name.charAt(0)}
+                    </p>
                   )}
-                  <p>{user.result.name}</p>
+                  {user.result.name}
+
                   <div className="down-arrow">
                     <svg
                       version="1.1"
@@ -88,6 +91,9 @@ const Navbar = ({ theme, setTheme }) => {
                   </div>
                 </div>
                 <div className="dropdown">
+                  <Link to="/your-items">
+                    <SLink>Your Items</SLink>
+                  </Link>
                   <Link to="/sell">
                     <SLink>For Sale</SLink>
                   </Link>
@@ -147,8 +153,19 @@ const AddWrapper = styled.div`
   .down-arrow {
     width: 1rem;
     margin: 0 1.5em 0 0.5em;
+    display: flex;
   }
-  p {
+  .alter-profile-pic {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    margin-right: 0.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--colorPrimary);
+    color: #fff;
+    font-size: var(--lengthMd2);
   }
 `;
 
@@ -174,6 +191,7 @@ const Profile = styled.div`
     background: #fff;
     padding: 1em;
     border-radius: 5px;
+    z-index: 99;
     transition: opacity 250ms ease-in-out;
   }
 `;
@@ -193,7 +211,7 @@ const PButton = styled.button`
     background: #690df3;
   }
 `;
-const SLink = styled.a`
+const SLink = styled.div`
   display: block;
   width: 100%;
   font-size: var(--lengthMd1);

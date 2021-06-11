@@ -1,8 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import Form from "../components/Form";
+import NotAuth from "../components/NotAuth";
 const Rent = () => {
   const option = "Rent";
+  const user = JSON.parse(localStorage.getItem("profile"));
+  if (!user?.result?.name) {
+    return <NotAuth option={option} />;
+  }
   return (
     <div className="container">
       <Title>

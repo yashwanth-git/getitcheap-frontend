@@ -18,7 +18,14 @@ const Item = () => {
   console.log(data);
   return (
     <div className="container">
-      {data ? <h2>{data.itemName}</h2> : <Loader />}
+      {data ? (
+        <>
+          <h2>{data.itemName}</h2>
+          <p>{data.userName}</p>
+        </>
+      ) : (
+        <Loader />
+      )}
     </div>
   );
 };

@@ -1,8 +1,9 @@
-import { GETITEMS, CREATEITEM } from "../constants/actionTypes";
+import { GETITEMS, CREATEITEM, GETUSERITEMS } from "../constants/actionTypes";
 
 const initState = {
   allItems: [],
   searchedItems: [],
+  userItems: [],
 };
 
 const items = (state = initState, action) => {
@@ -16,6 +17,11 @@ const items = (state = initState, action) => {
       return {
         ...state,
         ...action.payload,
+      };
+    case GETUSERITEMS:
+      return {
+        ...state,
+        userItems: action.payload,
       };
     default:
       return { ...state };
